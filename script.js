@@ -453,65 +453,43 @@ if (document.readyState === 'complete') {
 }
 
 
-// Certifications Section - Working Version
+// Certificate Modal Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. First check if section exists
-    const certSection = document.getElementById('certifications');
-    if (!certSection) return;
-
-    // 2. Make all cards visible by default (fallback)
-    const certCards = document.querySelectorAll('.certification-card');
-    gsap.set(certCards, { opacity: 1, y: 0 });
-
-    // 3. Simple carousel functionality
-    const carousel = document.querySelector('.certifications-carousel');
-    if (carousel) {
-        // Enable smooth scrolling
-        carousel.style.scrollBehavior = 'smooth';
-        
-        // Navigation buttons
-        document.querySelector('.carousel-prev')?.addEventListener('click', () => {
-            carousel.scrollBy({ left: -300, behavior: 'smooth' });
+    const modal = document.getElementById('certificateModal');
+    const modalImg = document.getElementById('modalCertificateImage');
+    const closeModal = document.querySelector('.close-modal');
+    
+    // Open modal when any view certificate button is clicked
+    document.querySelectorAll('.view-certificate').forEach(button => {
+        button.addEventListener('click', function() {
+            const imageSrc = this.getAttribute('data-image');
+            modal.style.display = "block";
+            modalImg.src = imageSrc;
+            document.body.style.overflow = "hidden"; // Prevent scrolling
         });
-        
-        document.querySelector('.carousel-next')?.addEventListener('click', () => {
-            carousel.scrollBy({ left: 300, behavior: 'smooth' });
-        });
-    }
-
-    // 4. GSAP Animations (only if GSAP is loaded)
-    if (typeof gsap !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
-        
-        // Animate each card individually
-        certCards.forEach((card, index) => {
-            gsap.from(card, {
-                y: 50,
-                opacity: 0,
-                duration: 0.6,
-                delay: index * 0.15,
-                scrollTrigger: {
-                    trigger: '#certifications',
-                    start: 'top 80%',
-                    toggleActions: 'play none none none',
-                    markers: false // Set to true to debug positioning
-                },
-                ease: 'power2.out'
-            });
-        });
-
-        // Animate section header
-        gsap.from('#certifications .section-title', {
-            y: 30,
-            opacity: 0,
-            duration: 0.8,
-            scrollTrigger: {
-                trigger: '#certifications',
-                start: 'top 90%',
-                toggleActions: 'play none none none'
-            }
-        });
-    }
+    });
+    
+    // Close modal when X is clicked
+    closeModal.addEventListener('click', function() {
+        modal.style.display = "none";
+        document.body.style.overflow = "auto";
+    });
+    
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" && modal.style.display === "block") {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    });
 });
 
 // Download Resume Functionality
