@@ -34,6 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     duration: 0.8,
                     ease: 'power3.out'
                 })
+                .from('.hero-image', {
+                    y: -50,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: 'power3.out'
+                })
                 .from('.nav-links li', {
                     y: -50,
                     opacity: 0,
@@ -454,43 +460,6 @@ if (document.readyState === 'complete') {
 
 
 // Certificate Modal Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('certificateModal');
-    const modalImg = document.getElementById('modalCertificateImage');
-    const closeModal = document.querySelector('.close-modal');
-    
-    // Open modal when any view certificate button is clicked
-    document.querySelectorAll('.view-certificate').forEach(button => {
-        button.addEventListener('click', function() {
-            const imageSrc = this.getAttribute('data-image');
-            modal.style.display = "block";
-            modalImg.src = imageSrc;
-            document.body.style.overflow = "hidden"; // Prevent scrolling
-        });
-    });
-    
-    // Close modal when X is clicked
-    closeModal.addEventListener('click', function() {
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
-    });
-    
-    // Close modal when clicking outside the image
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
-        }
-    });
-    
-    // Close modal with ESC key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === "Escape" && modal.style.display === "block") {
-            modal.style.display = "none";
-            document.body.style.overflow = "auto";
-        }
-    });
-});
 
 // Download Resume Functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -555,3 +524,92 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
   });
+
+
+// Certificate/Achievement Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('certificateModal');
+    const modalImg = document.getElementById('modalCertificateImage');
+    const closeModal = document.querySelector('.close-modal');
+    
+    // Function to open modal
+    function openModal(imageSrc) {
+        if (!modal || !modalImg) return;
+        
+        // Preload image to get dimensions
+        const img = new Image();
+        img.src = imageSrc;
+        img.onload = function() {
+            modalImg.src = imageSrc;
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+            
+            // Center modal content
+            centerModal();
+        };
+    }
+    
+    // Function to close modal
+    function closeModalFunc() {
+        if (modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+    
+    // Center modal content
+    function centerModal() {
+        const modalContent = document.querySelector('.modal-content');
+        if (!modalContent) return;
+        
+        const windowHeight = window.innerHeight;
+        const imgHeight = modalImg.offsetHeight;
+        
+        if (imgHeight > windowHeight * 0.9) {
+            modalContent.style.top = '50%';
+            modalContent.style.transform = 'translateY(-50%)';
+        } else {
+            modalContent.style.top = '50%';
+            modalContent.style.transform = 'translateY(-50%)';
+        }
+    }
+    
+    // Set up event listeners for all view buttons
+    document.querySelectorAll('.view-certificate, .view-achievement').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const imageSrc = this.getAttribute('data-image');
+            if (imageSrc) {
+                openModal(imageSrc);
+            }
+        });
+    });
+    
+    // Close modal when X is clicked
+    if (closeModal) {
+        closeModal.addEventListener('click', closeModalFunc);
+    }
+    
+    // Close modal when clicking outside the image
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModalFunc();
+            }
+        });
+    }
+    
+    // Close modal with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === "Escape" && modal && modal.style.display === "block") {
+            closeModalFunc();
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (modal && modal.style.display === "block") {
+            centerModal();
+        }
+    });
+});
