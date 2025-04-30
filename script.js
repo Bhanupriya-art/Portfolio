@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.addEventListener('click', function() {
             // Method 1: Direct download link (recommended)
             const link = document.createElement('a');
-            link.href = 'https://drive.google.com/uc?export=download&id=1I5H6giTYIgnhOe8KomdHOWQNmepX2CSw'; // Update with your actual file path
+            link.href = 'https://drive.google.com/uc?export=download&id=1gR_s7SmG6T55_ZRxT9VmOGR1wQJc3nTv'; // Update with your actual file path
             link.download = 'Bhanu_Priya_Resume.pdf'; // Customize filename
             document.body.appendChild(link);
             link.click();
@@ -478,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Method 2: Fallback using window.open()
             setTimeout(() => {
                 if (!document.querySelector('a[href*=".pdf"]')) {
-                    window.open('https://drive.google.com/uc?export=download&id=1I5H6giTYIgnhOe8KomdHOWQNmepX2CSw', '_blank');
+                    window.open('https://drive.google.com/uc?export=download&id=1gR_s7SmG6T55_ZRxT9VmOGR1wQJc3nTv', '_blank');
                 }
             }, 500);
         });
